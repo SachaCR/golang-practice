@@ -52,12 +52,18 @@ func getBabyById(c *gin.Context) {
 	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Baby not found"})
 }
 
+func getBabyTimeline(c *gin.Context) {
+
+	c.IndentedJSON(http.StatusNotImplemented, gin.H{"message": "This feature is under development"})
+}
+
 func buildRouter() *gin.Engine {
 	router := gin.Default()
 	//router.Use(latencyMiddleware)
 
 	router.GET("/babies", getBabies)
 	router.GET("/babies/:id", getBabyById)
+	router.GET("/babies/:id/timeline/:date", getBabyTimeline)
 	router.POST("/babies", addBaby)
 
 	return router
