@@ -9,9 +9,9 @@ import (
 )
 
 var babies = []baby.Baby{
-	{Id: "1", FirstName: "Elio", LastName: "Clerc-Renaud", BirthDate: "2022-12-23"},
-	{Id: "2", FirstName: "Amelia", LastName: "Clerc-Renaud", BirthDate: "2023-12-23"},
-	{Id: "3", FirstName: "Ocean", LastName: "Clerc-Renaud", BirthDate: "2024-12-23"},
+	{Id: "1", FirstName: "Toto", LastName: "Tata", BirthDate: "2022-12-23"},
+	{Id: "2", FirstName: "titi", LastName: "Titi", BirthDate: "2023-12-23"},
+	{Id: "3", FirstName: "Tutu", LastName: "Tutu", BirthDate: "2024-12-23"},
 }
 
 func getBabies(c *gin.Context) {
