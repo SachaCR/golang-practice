@@ -1,70 +1,59 @@
 package main
 
 import (
+	"golang-practice/pkg/children"
 	"net/http"
-
-	"golang-practice/pkg/baby"
 
 	"github.com/gin-gonic/gin"
 )
 
-var babies = []baby.Baby{
-	{Id: "1", FirstName: "Toto", LastName: "Tata", BirthDate: "2022-12-23"},
-	{Id: "2", FirstName: "titi", LastName: "Titi", BirthDate: "2023-12-23"},
-	{Id: "3", FirstName: "Tutu", LastName: "Tutu", BirthDate: "2024-12-23"},
+var childrenList = children.ChildrenList
+
+func getAllChildren(c *gin.Context) {
+	c.IndentedJSON(http.StatusOK, childrenList)
 }
 
-func getBabies(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, babies)
-}
+func addChild(c *gin.Context) {
+	var children children.Children
 
-// func latencyMiddleware(c *gin.Context) {
-//  t := time.Now()
-//  c.Next()
-//  latency := time.Since(t)
-//  logger.Print("Latency: " + latency.String())
-// }
+	err := c.BindJSON(&children)
 
-// postAlbums adds an album from JSON received in the request body.
-func addBaby(c *gin.Context) {
-	var baby baby.Baby
-
-	// Call BindJSON to bind the received JSON to
-	if err := c.BindJSON(&baby); err != nil {
+	if err != nil {
 		return
 	}
 
 	// Add the new album to the slice.
-	babies = append(babies, baby)
-	c.IndentedJSON(http.StatusCreated, baby)
+	childrenList = append(childrenList, children)
+
+	c.IndentedJSON(http.StatusCreated, children)
 }
 
-func getBabyById(c *gin.Context) {
+func getChildById(c *gin.Context) {
 	id := c.Param("id")
 
-	for _, baby := range babies {
-		if baby.Id == id {
-			c.IndentedJSON(http.StatusOK, baby)
+	for _, children := range childrenList {
+		if children.Id == id {
+			c.IndentedJSON(http.StatusOK, children)
 			return
 		}
 	}
 
-	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Baby not found"})
+	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Child not found"})
 }
 
-func getBabyTimeline(c *gin.Context) {
+func getChildTimeline(c *gin.Context) {
 
 	c.IndentedJSON(http.StatusNotImplemented, gin.H{"message": "This feature is under development"})
 }
 
 func buildRouter() *gin.Engine {
+	gin.SetMode(gin.TestMode)
 	router := gin.Default()
-	//router.Use(latencyMiddleware)
 
-	router.GET("/babies", getBabies)
-	router.GET("/babies/:id", getBabyById)
-	router.GET("/babies/:id/timeline/:date", getBabyTimeline)
-	router.POST("/babies", addBaby)
+	router.GET("/children", getAllChildren)
+	router.GET("/children/:id", getChildById)
+	router.GET("/children/:id/timeline/:date", getChildTimeline)
+	router.POST("/children", addChild)
 
 	return router
 }

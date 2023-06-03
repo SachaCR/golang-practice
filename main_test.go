@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"golang-practice/pkg/baby"
+	"golang-practice/pkg/children"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -12,16 +12,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGetBabyByIdRoute(t *testing.T) {
+func TestGetChildByIdRoute(t *testing.T) {
 	router := buildRouter()
 
 	response := httptest.NewRecorder()
-	request, _ := http.NewRequest("GET", "/babies/1", nil)
+	request, _ := http.NewRequest("GET", "/children/1", nil)
 	router.ServeHTTP(response, request)
 
 	assert.Equal(t, 200, response.Code)
 
-	result := baby.Baby{}
+	result := children.Children{}
 	if err := json.NewDecoder(response.Body).Decode(&result); err != nil {
 		log.Fatalln(err)
 	}
@@ -29,16 +29,16 @@ func TestGetBabyByIdRoute(t *testing.T) {
 	assert.Equal(t, (result.Id), "1")
 }
 
-func TestGetBabiesRoute(t *testing.T) {
+func TestGetChildrensRoute(t *testing.T) {
 	router := buildRouter()
 
 	response := httptest.NewRecorder()
-	request, _ := http.NewRequest("GET", "/babies", nil)
+	request, _ := http.NewRequest("GET", "/children", nil)
 	router.ServeHTTP(response, request)
 
 	assert.Equal(t, 200, response.Code)
 
-	results := []baby.Baby{}
+	results := []children.Children{}
 	if err := json.NewDecoder(response.Body).Decode(&results); err != nil {
 		log.Fatalln(err)
 	}
@@ -46,26 +46,27 @@ func TestGetBabiesRoute(t *testing.T) {
 	assert.Equal(t, len(results), 3)
 }
 
-func TestAddBabyRoute(t *testing.T) {
+func TestAddChildRoute(t *testing.T) {
 	router := buildRouter()
 
-	babyToCreate := &baby.Baby{Id: "5", FirstName: "test", LastName: "test", BirthDate: "2023-12-23"}
-	var babyJSON, err = json.Marshal(babyToCreate)
+	childToCreate := children.Children{"5", "test", "test", "2023-12-23"}
+	var childJSON, err = json.Marshal(childToCreate)
 
 	if err != nil {
 		return
 	}
 
 	response := httptest.NewRecorder()
-	request, _ := http.NewRequest("POST", "/babies", bytes.NewReader(babyJSON))
+	request, _ := http.NewRequest("POST", "/children", bytes.NewReader(childJSON))
 	router.ServeHTTP(response, request)
 
 	assert.Equal(t, http.StatusCreated, response.Code)
 
-	result := baby.Baby{}
+	result := children.Children{}
+
 	if err := json.NewDecoder(response.Body).Decode(&result); err != nil {
 		log.Fatalln(err)
 	}
 
-	assert.Equal(t, result.Id, babyToCreate.Id)
+	assert.Equal(t, result.Id, childToCreate.Id)
 }

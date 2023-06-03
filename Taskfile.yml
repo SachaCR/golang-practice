@@ -1,0 +1,19 @@
+version: "3"
+
+vars:
+    CONTAINER_IMAGE: mycontainerimage
+
+tasks:
+    run:
+        desc: Run the service
+        cmds:
+        - go run .
+
+    build:
+        desc: Build the service
+        cmds:
+        - go build .
+    test:
+        desc: Test the service
+        cmds:
+        - go test -v .
