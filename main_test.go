@@ -13,7 +13,8 @@ import (
 )
 
 func TestGetChildByIdRoute(t *testing.T) {
-	router := buildRouter()
+
+	router := buildRouter("test")
 
 	response := httptest.NewRecorder()
 	request, _ := http.NewRequest("GET", "/children/1", nil)
@@ -30,7 +31,7 @@ func TestGetChildByIdRoute(t *testing.T) {
 }
 
 func TestGetChildrensRoute(t *testing.T) {
-	router := buildRouter()
+	router := buildRouter("test")
 
 	response := httptest.NewRecorder()
 	request, _ := http.NewRequest("GET", "/children", nil)
@@ -47,7 +48,7 @@ func TestGetChildrensRoute(t *testing.T) {
 }
 
 func TestAddChildRoute(t *testing.T) {
-	router := buildRouter()
+	router := buildRouter("test")
 
 	childToCreate := children.Children{"5", "test", "test", "2023-12-23"}
 	var childJSON, err = json.Marshal(childToCreate)

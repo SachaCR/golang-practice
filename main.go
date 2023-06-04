@@ -3,6 +3,7 @@ package main
 import (
 	"golang-practice/pkg/children"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -46,9 +47,15 @@ func getChildTimeline(c *gin.Context) {
 	c.IndentedJSON(http.StatusNotImplemented, gin.H{"message": "This feature is under development"})
 }
 
-func buildRouter() *gin.Engine {
-	gin.SetMode(gin.TestMode)
-	router := gin.Default()
+func buildRouter(env string) *gin.Engine {
+	gin.SetMode(gin.ReleaseMode)
+
+	router := gin.New()
+
+	if env != "test" {
+		router.Use(gin.Logger())
+		router.Use(gin.Recovery())
+	}
 
 	router.GET("/children", getAllChildren)
 	router.GET("/children/:id", getChildById)
@@ -59,6 +66,8 @@ func buildRouter() *gin.Engine {
 }
 
 func main() {
-	var router = buildRouter()
+	environment := os.Getenv("GO_ENV")
+
+	var router = buildRouter(environment)
 	router.Run(":8080")
 }

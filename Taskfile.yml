@@ -16,4 +16,4 @@ tasks:
     test:
         desc: Test the service
         cmds:
-        - go test -v .
+        - GO_ENV=test go test -v .
