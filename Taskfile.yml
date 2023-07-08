@@ -1,19 +1,32 @@
 version: "3"
 
-vars:
-    CONTAINER_IMAGE: mycontainerimage
-
 tasks:
     run:
         desc: Run the service
         cmds:
         - go run .
+        
+    local:
+        desc: Run the service
+        cmds:
+        - GO_ENV=localhost go run .
+        
+    staging:
+        desc: Run the service
+        cmds:
+        - GO_ENV=staging go run .
 
     build:
         desc: Build the service
         cmds:
         - go build .
+
     test:
         desc: Test the service
         cmds:
-        - GO_ENV=test go test -v .
+        - GO_ENV=test go test -v ./...
+    
+    coverage:
+        desc: Evaluate test coverage
+        cmds:
+        - GO_ENV=test go test -v -coverprofile coverage.out ./... && go tool cover -html=coverage.out
