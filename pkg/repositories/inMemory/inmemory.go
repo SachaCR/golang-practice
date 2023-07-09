@@ -4,7 +4,7 @@ import (
 	"golang-practice/pkg/todo"
 )
 
-type RepositoryStateInMemory struct {
+type repositoryStateInMemory struct {
 	data []todo.TodoDTO
 }
 
@@ -14,12 +14,12 @@ func New() todo.TodoRepository {
 	}
 }
 
-func (state *RepositoryStateInMemory) Save(todoTask todo.TodoTask) error {
+func (state *repositoryStateInMemory) Save(todoTask todo.TodoTask) error {
 	state.data = append(state.data, todoTask.ToDTO())
 	return nil
 }
 
-func (state *RepositoryStateInMemory) GetById(id string) (todo.TodoTask, error) {
+func (state *repositoryStateInMemory) GetById(id string) (todo.TodoTask, error) {
 
 	for _, todoDTO := range state.data {
 		if todoDTO.Id == id {
@@ -37,7 +37,7 @@ func (state *RepositoryStateInMemory) GetById(id string) (todo.TodoTask, error) 
 	return nil, nil
 }
 
-func (state *RepositoryStateInMemory) GetAll() ([]todo.TodoTask, error) {
+func (state *repositoryStateInMemory) GetAll() ([]todo.TodoTask, error) {
 
 	var todoList []todo.TodoTask
 

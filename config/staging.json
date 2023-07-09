@@ -1,7 +1,7 @@
 
 {
   "server": {
-    "port": "2222"
+    "port": "80"
   },
   "postgres": {
     "port": "5437",

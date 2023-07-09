@@ -19,6 +19,8 @@ func LoadConfiguration(environment env.AppEnvironment) {
 	viper.SetDefault("postgres.password", "local")
 	viper.SetDefault("postgres.user", "local")
 	viper.SetDefault("postgres.database", "testDB")
+	viper.BindEnv("postres.password", "PG_PASSWORD")
+	viper.BindEnv("postres.password", "PG_USER")
 
 	viper.SetConfigName(environment.String())
 	viper.SetConfigType("json")
