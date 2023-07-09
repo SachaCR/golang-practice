@@ -9,7 +9,7 @@ type repositoryStateInMemory struct {
 }
 
 func New() todo.TodoRepository {
-	return &RepositoryStateInMemory{
+	return &repositoryStateInMemory{
 		data: []todo.TodoDTO{},
 	}
 }

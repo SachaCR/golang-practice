@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"golang-practice/pkg/config"
-	"golang-practice/pkg/database"
 	"golang-practice/pkg/env"
 	inmemory "golang-practice/pkg/repositories/inMemory"
 	"golang-practice/pkg/server"
@@ -20,11 +19,6 @@ func main() {
 	config.LoadConfiguration(environment)
 
 	var serverAddress = viper.GetString("server.host") + ":" + viper.GetString("server.port")
-
-	var db = database.InitConnection()
-
-	var test = db.Select("1")
-	fmt.Println(test)
 
 	var todoRepository = inmemory.New()
 
