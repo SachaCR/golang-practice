@@ -15,12 +15,12 @@ func TestNew(t *testing.T) {
 	assert.Equal(t, myTodo.ToDTO().Id, "1")
 	assert.Equal(t, myTodo.ToDTO().Description, "Task Description")
 	assert.Equal(t, myTodo.ToDTO().Title, "Task Title")
-	assert.Equal(t, myTodo.ToDTO().Status, Todo)
+	assert.Equal(t, myTodo.ToDTO().Status, "Todo")
 	assert.Equal(t, myTodo.ToDTO().CreatedAt, todayDateString)
 }
 
 func TestFromDTO(t *testing.T) {
-	var todoDTO = TodoDTO{Id: "1", Title: "Task Title", Description: "Task Description", CreatedAt: "2022-12-23", Status: InProgress}
+	var todoDTO = TodoDTO{Id: "1", Title: "Task Title", Description: "Task Description", CreatedAt: "2022-12-23", Status: "InProgress"}
 	var myTodo, err = FromDTO(todoDTO)
 
 	if err != nil {
@@ -30,6 +30,6 @@ func TestFromDTO(t *testing.T) {
 	assert.Equal(t, myTodo.ToDTO().Id, "1")
 	assert.Equal(t, myTodo.ToDTO().Description, "Task Description")
 	assert.Equal(t, myTodo.ToDTO().Title, "Task Title")
-	assert.Equal(t, myTodo.ToDTO().Status, InProgress)
+	assert.Equal(t, myTodo.ToDTO().Status, "InProgress")
 	assert.Equal(t, myTodo.ToDTO().CreatedAt, "2022-12-23")
 }

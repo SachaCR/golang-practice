@@ -3,11 +3,11 @@ package todo
 import "time"
 
 type TodoDTO struct {
-	Id          string     `json:"id" binding:"required"`
-	Title       string     `json:"title" binding:"required"`
-	Description string     `json:"description" binding:"required"`
-	CreatedAt   string     `json:"createdAt" binding:"required"`
-	Status      TodoStatus `json:"status" binding:"required"`
+	Id          string `json:"id" binding:"required"`
+	Title       string `json:"title" binding:"required"`
+	Description string `json:"description" binding:"required"`
+	CreatedAt   string `json:"createdAt" binding:"required"`
+	Status      string `json:"status" binding:"required"`
 }
 
 func FromDTO(data TodoDTO) (TodoTask, error) {
@@ -21,7 +21,7 @@ func FromDTO(data TodoDTO) (TodoTask, error) {
 		Id:          data.Id,
 		Title:       data.Title,
 		Description: data.Description,
-		Status:      data.Status,
+		Status:      TodoStatusFromString(data.Status),
 		CreatedAt:   createdAt,
 	}, nil
 }
@@ -31,7 +31,7 @@ func (state *todoState) ToDTO() TodoDTO {
 		Title:       state.Title,
 		Description: state.Description,
 		Id:          state.Id,
-		Status:      state.Status,
+		Status:      state.Status.String(),
 		CreatedAt:   state.CreatedAt.Format("2006-01-02"),
 	}
 
