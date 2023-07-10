@@ -13,6 +13,9 @@ func LoadConfiguration(environment env.AppEnvironment) {
 	viper.SetDefault("server.port", "8080")
 	viper.SetDefault("server.host", "localhost")
 
+	viper.BindEnv("server.port", "API_PORT")
+	viper.BindEnv("server.host", "API_HOST")
+
 	// Database Default Configuration
 	viper.SetDefault("postgres.host", "localhost")
 	viper.SetDefault("postgres.port", "5432")
