@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"golang-practice/pkg/config"
 	"golang-practice/pkg/env"
-	inmemory "golang-practice/pkg/repositories/inMemory"
+	"golang-practice/pkg/repositories/inmemory"
 	"golang-practice/pkg/server"
 	"golang-practice/pkg/todo"
 	"os"

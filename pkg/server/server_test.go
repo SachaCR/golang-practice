@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"golang-practice/pkg/env"
-	inmemory "golang-practice/pkg/repositories/inMemory"
+	"golang-practice/pkg/repositories/inmemory"
 	"golang-practice/pkg/server/internals/errors"
 	"golang-practice/pkg/todo"
 	"log"
