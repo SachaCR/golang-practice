@@ -31,7 +31,13 @@ func (state *ControllerState) GetAllTodos(c *gin.Context) {
 			errors.ServerError{Message: err.Error()})
 	}
 
-	c.IndentedJSON(http.StatusOK, todos)
+	var todoDTOs = []todo.TodoDTO{}
+
+	for _, todoTask := range todos {
+		todoDTOs = append(todoDTOs, todoTask.ToDTO())
+	}
+
+	c.IndentedJSON(http.StatusOK, todoDTOs)
 }
 
 func (state *ControllerState) AddTodo(c *gin.Context) {
@@ -41,13 +47,14 @@ func (state *ControllerState) AddTodo(c *gin.Context) {
 
 	if bindJsonError != nil {
 		c.JSON(http.StatusBadRequest, errors.ServerError{Message: "Cannot bind payload"})
+		return
 	}
 
 	var todoCreated = todo.New(todoToCreate)
 
 	state.todoRepository.Save(todoCreated)
 
-	c.IndentedJSON(http.StatusCreated, todoCreated)
+	c.IndentedJSON(http.StatusCreated, todoCreated.ToDTO())
 }
 
 func (state *ControllerState) GetTodoById(c *gin.Context) {
@@ -63,9 +70,10 @@ func (state *ControllerState) GetTodoById(c *gin.Context) {
 
 	if todo == nil {
 		c.IndentedJSON(http.StatusNotFound, errors.ServerError{Message: "Todo not found"})
+		return
 	}
 
-	c.IndentedJSON(http.StatusOK, todo)
+	c.IndentedJSON(http.StatusOK, todo.ToDTO())
 }
 
 func New(dependencies ControllerDependencies) Controllers {

@@ -53,6 +53,7 @@ func TestGetTodoByIdNotFoundRoute(t *testing.T) {
 	assert.Equal(t, 404, response.Code)
 
 	result := errors.ServerError{}
+
 	if err := json.NewDecoder(response.Body).Decode(&result); err != nil {
 		log.Fatalln(err)
 	}
