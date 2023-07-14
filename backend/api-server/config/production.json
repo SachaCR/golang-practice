@@ -5,7 +5,7 @@
   },
   "todoService": {
     "repositories": {
-      "engine": "Postgres"
+      "engine": "InMemory"
     }
   },
   "postgres": {
