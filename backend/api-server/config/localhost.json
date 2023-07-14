@@ -1,0 +1,17 @@
+{
+  "server": {
+    "port": "8080"
+  },
+  "todoService": {
+    "repositories": {
+      "engine": "InMemory"
+    }
+  },
+  "postgres": {
+    "port": "5437",
+    "host": "localhost",
+    "user": "local",
+    "password": "local",
+    "database": "golangTest"
+  }
+}

@@ -1,0 +1,37 @@
+version: "3"
+
+tasks:
+    run:
+        desc: Run the service
+        cmds:
+        - go run .
+        
+    local:
+        desc: Run the service
+        cmds:
+        - GO_ENV=localhost go run .
+        
+    staging:
+        desc: Run the service
+        cmds:
+        - GO_ENV=staging go run .
+
+    build:
+        desc: Build the service
+        cmds:
+        - go build .
+
+    rawtest:
+        desc: Test the service with default test runner
+        cmds:
+        - GO_ENV=test go test -v ./...
+
+    test:
+        desc: Test the service with gotestsum
+        cmds:
+        - GO_ENV=test gotestsum --format pkgname
+    
+    coverage:
+        desc: Evaluate test coverage
+        cmds:
+        - GO_ENV=test go test -v -coverprofile coverage.out ./... && go tool cover -html=coverage.out
