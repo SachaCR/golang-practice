@@ -66,11 +66,13 @@ func (state *ControllerState) GetTodoById(c *gin.Context) {
 
 		if isNotFoundError {
 			c.IndentedJSON(http.StatusNotFound, errors.ServerError{Message: err.Error()})
+			return
 		}
 
 		c.JSON(
 			http.StatusInternalServerError,
 			errors.ServerError{Message: err.Error()})
+		return
 	}
 
 	c.IndentedJSON(http.StatusOK, todoDTO)
