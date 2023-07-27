@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"golang-practice/pkg/actor"
 	"golang-practice/pkg/server/internal/errors"
 	"golang-practice/pkg/todoservice"
 	"net/http"
@@ -46,7 +47,7 @@ func (state *ControllerState) AddTodo(c *gin.Context) {
 		return
 	}
 
-	var todoDTO, err = state.TodoService.AddTodo(createTodoDTO)
+	var todoDTO, err = state.TodoService.AddTodo(createTodoDTO, actor.New("toto", actor.User, []string{"basic-user"}))
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, errors.ServerError{Message: "Cannot create todo"})

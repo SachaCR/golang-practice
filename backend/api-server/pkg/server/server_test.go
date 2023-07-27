@@ -15,6 +15,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+const TODO_PATH_PREFIX = "/todos"
+
 func createATodo(t *testing.T, router *gin.Engine) {
 
 	createTodoDTO := todoservice.CreateTodoDTO{
@@ -30,7 +32,7 @@ func createATodo(t *testing.T, router *gin.Engine) {
 	}
 
 	response := httptest.NewRecorder()
-	request, _ := http.NewRequest("POST", "/todos", bytes.NewReader(childJSON))
+	request, _ := http.NewRequest("POST", TODO_PATH_PREFIX, bytes.NewReader(childJSON))
 	router.ServeHTTP(response, request)
 
 	assert.Equal(t, http.StatusCreated, response.Code)
@@ -50,7 +52,7 @@ func TestGetTodoByIdRoute(t *testing.T) {
 	createATodo(t, router)
 
 	response := httptest.NewRecorder()
-	request, _ := http.NewRequest("GET", "/todos/1", nil)
+	request, _ := http.NewRequest("GET", TODO_PATH_PREFIX+"/1", nil)
 	router.ServeHTTP(response, request)
 
 	assert.Equal(t, 200, response.Code)
@@ -68,7 +70,7 @@ func TestGetTodoByIdNotFoundRoute(t *testing.T) {
 	router := New(env.Test)
 
 	response := httptest.NewRecorder()
-	request, _ := http.NewRequest("GET", "/todos/4", nil)
+	request, _ := http.NewRequest("GET", TODO_PATH_PREFIX+"/4", nil)
 	router.ServeHTTP(response, request)
 
 	assert.Equal(t, 404, response.Code)
@@ -89,7 +91,7 @@ func TestGetTodosRoute(t *testing.T) {
 	createATodo(t, router)
 
 	response := httptest.NewRecorder()
-	request, _ := http.NewRequest("GET", "/todos", nil)
+	request, _ := http.NewRequest("GET", TODO_PATH_PREFIX, nil)
 	router.ServeHTTP(response, request)
 
 	assert.Equal(t, 200, response.Code)
@@ -118,7 +120,7 @@ func TestAddTodoRoute(t *testing.T) {
 	}
 
 	response := httptest.NewRecorder()
-	request, _ := http.NewRequest("POST", "/todos", bytes.NewReader(childJSON))
+	request, _ := http.NewRequest("POST", TODO_PATH_PREFIX, bytes.NewReader(childJSON))
 	router.ServeHTTP(response, request)
 
 	assert.Equal(t, http.StatusCreated, response.Code)
@@ -137,7 +139,7 @@ func TestAddTodoBadRequestRoute(t *testing.T) {
 	jsonStr := []byte("{ \"test\": \"Bad payload\"}")
 
 	response := httptest.NewRecorder()
-	request, _ := http.NewRequest("POST", "/todos", bytes.NewBuffer(jsonStr))
+	request, _ := http.NewRequest("POST", TODO_PATH_PREFIX, bytes.NewBuffer(jsonStr))
 
 	router.ServeHTTP(response, request)
 

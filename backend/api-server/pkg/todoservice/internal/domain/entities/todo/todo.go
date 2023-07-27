@@ -10,6 +10,7 @@ type TodoState struct {
 	Id          string
 	Title       string
 	Description string
+	CreatedBy   string
 	CreatedAt   time.Time
 	Status      TodoStatus
 }
@@ -18,6 +19,7 @@ type TodoToCreate struct {
 	Id          string
 	Title       string
 	Description string
+	CreatedBy   string
 }
 
 func New(data TodoToCreate) TodoTask {
@@ -26,6 +28,7 @@ func New(data TodoToCreate) TodoTask {
 		Title:       data.Title,
 		Description: data.Description,
 		Status:      Todo,
+		CreatedBy:   data.CreatedBy,
 		CreatedAt:   time.Now(),
 	}
 }
@@ -37,6 +40,7 @@ func (state *TodoState) CopyState() TodoState {
 		Id:          state.Id,
 		Status:      state.Status,
 		CreatedAt:   state.CreatedAt,
+		CreatedBy:   state.CreatedBy,
 	}
 
 	return copiedState
@@ -49,5 +53,6 @@ func FromState(data TodoState) TodoTask {
 		Description: data.Description,
 		Status:      data.Status,
 		CreatedAt:   data.CreatedAt,
+		CreatedBy:   data.CreatedBy,
 	}
 }

@@ -1,6 +1,8 @@
 package todoservice
 
 import (
+	"errors"
+	"golang-practice/pkg/actor"
 	"golang-practice/pkg/todoservice/internal/domain/entities/todo"
 	"golang-practice/pkg/todoservice/internal/infrastructure/repositories"
 
@@ -8,7 +10,7 @@ import (
 )
 
 type TodoService interface {
-	AddTodo(createTodoDTO CreateTodoDTO) (TodoDTO, error)
+	AddTodo(createTodoDTO CreateTodoDTO, anActor actor.Actor) (TodoDTO, error)
 	GetTodoById(id string) (TodoDTO, error)
 	GetTodoList() ([]TodoDTO, error)
 	//updateTodo(id string, data TodoUpdate)
@@ -31,12 +33,35 @@ func New() TodoService {
 	}
 }
 
-func (state *todoServiceState) AddTodo(createTodoDTO CreateTodoDTO) (TodoDTO, error) {
+func verifyPermissions(anActor actor.Actor) bool {
+	var isAuthorized bool = false
+
+	if anActor.GetType() != actor.User {
+		return isAuthorized
+	}
+
+	for _, role := range anActor.GetRoles() {
+		if role == "basic-user" {
+			isAuthorized = true
+		}
+	}
+
+	return isAuthorized
+}
+
+func (state *todoServiceState) AddTodo(todoToCreate CreateTodoDTO, anActor actor.Actor) (TodoDTO, error) {
+
+	var isAuthorized bool = verifyPermissions(anActor)
+
+	if !isAuthorized {
+		return emptyDTO, errors.New("actor is unauthorized")
+	}
 
 	var todoTask = todo.New(todo.TodoToCreate{
-		Id:          createTodoDTO.Id,
-		Title:       createTodoDTO.Title,
-		Description: createTodoDTO.Description,
+		Id:          todoToCreate.Id,
+		Title:       todoToCreate.Title,
+		Description: todoToCreate.Description,
+		CreatedBy:   anActor.GetId(),
 	})
 
 	var error = state.TodoRepository.Save(todoTask)

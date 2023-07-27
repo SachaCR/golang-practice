@@ -1,23 +1,30 @@
 import { useState } from 'react'
-import { Auth0Provider, useAuth0 } from '@auth0/auth0-react';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
+const LoginButton = () => {
+  const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
 
-  const LoginButton = () => {
-    const { loginWithRedirect, isAuthenticated } = useAuth0();
-    return (!isAuthenticated && (
-        <button onClick={() => loginWithRedirect()}>Log In</button>
-      )
-    );
-  };
+  if (isLoading) {
+    return <div>Loading ...</div>;
+  }
 
+  return (!isAuthenticated && (
+      <button onClick={() => loginWithRedirect()}>Log In</button>
+    )
+  );
+};
 
-  const LogoutButton = () => {
-  const { logout, isAuthenticated } = useAuth0();
+const LogoutButton = () => {
+  const { logout, isAuthenticated, isLoading } = useAuth0();
 
+    if (isLoading) {
+      return <div>Loading ...</div>;
+    }
+    
     return (
     isAuthenticated && (
       <button onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
@@ -25,11 +32,12 @@ import './App.css'
       </button>
     )
   );
-  };
+};
 
-
-  const Profile = () => {
+const Profile = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
+
+  console.log("USER: ", user)
 
   if (isLoading) {
     return <div>Loading ...</div>;
@@ -45,6 +53,7 @@ import './App.css'
     )
   );
 };
+
 function App() {
   const [count, setCount] = useState(0)
 
@@ -70,17 +79,9 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
-      <Auth0Provider
-          domain="dev-golang-test.eu.auth0.com"
-          clientId="KiigfCeTUPYc9SnQInAfN0RPkne2O3Wd"
-          authorizationParams={{
-            redirect_uri: window.location.origin
-          }}
-        >
-        <LoginButton></LoginButton>
-        <LogoutButton></LogoutButton>
-        <Profile></Profile>
-      </Auth0Provider>
+      <LoginButton></LoginButton>
+      <LogoutButton></LogoutButton>
+      <Profile></Profile>
     </>
   )
 }
