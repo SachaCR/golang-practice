@@ -19,6 +19,8 @@ So far I've lean and experimented the following things with Go:
 - Use Taskfile to manage my app scripts
 - Use Auth0 on the front end to authenticate users
 
+I was currently starting playing with authorization but this is not finished yet.
+
 Next step to experiment with:
 - Extract Authorization logic properly into a different package
 - Apply authorization logic with middlewares
