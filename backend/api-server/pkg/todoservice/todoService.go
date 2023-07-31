@@ -2,11 +2,12 @@ package todoservice
 
 import (
 	"errors"
-	"golang-practice/pkg/actor"
+	"golang-practice/pkg/actor" // Todo service is not coupled to the auth service and just to the actor package
 	"golang-practice/pkg/todoservice/internal/domain/entities/todo"
 	"golang-practice/pkg/todoservice/internal/infrastructure/repositories"
+	"golang-practice/pkg/todoservice/internal/permissions"
 
-	"github.com/spf13/viper"
+	"github.com/spf13/viper" // TODO We may want to avoid this coupling
 )
 
 type TodoService interface {
@@ -33,25 +34,9 @@ func New() TodoService {
 	}
 }
 
-func verifyPermissions(anActor actor.Actor) bool {
-	var isAuthorized bool = false
-
-	if anActor.GetType() != actor.User {
-		return isAuthorized
-	}
-
-	for _, role := range anActor.GetRoles() {
-		if role == "basic-user" {
-			isAuthorized = true
-		}
-	}
-
-	return isAuthorized
-}
-
 func (state *todoServiceState) AddTodo(todoToCreate CreateTodoDTO, anActor actor.Actor) (TodoDTO, error) {
 
-	var isAuthorized bool = verifyPermissions(anActor)
+	var isAuthorized bool = permissions.Verify(anActor) // TODO find a way to enforce permissions automatically before every service's methods.
 
 	if !isAuthorized {
 		return emptyDTO, errors.New("actor is unauthorized")

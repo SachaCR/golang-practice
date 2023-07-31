@@ -2,6 +2,18 @@ package actor
 
 import "fmt"
 
+// This package provide interfaces and types to represent the different actors that interact with our app.
+// It is not tied to any auth or permissions mechanism.
+
+type ActorType int64
+
+const (
+	User ActorType = iota
+	Service
+	Cron
+	Job
+)
+
 type Actor interface {
 	GetId() string
 	GetType() ActorType
@@ -33,15 +45,6 @@ func (state *actorState) GetType() ActorType {
 func (state *actorState) GetRoles() []string {
 	return state.Roles
 }
-
-type ActorType int64
-
-const (
-	User ActorType = iota
-	Service
-	Cron
-	Job
-)
 
 func (s ActorType) String() string {
 	switch s {

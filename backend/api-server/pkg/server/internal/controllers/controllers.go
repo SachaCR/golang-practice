@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"golang-practice/pkg/actor"
 	"golang-practice/pkg/server/internal/errors"
+	"golang-practice/pkg/server/internal/middlewares/fakeAuth"
 	"golang-practice/pkg/todoservice"
 	"net/http"
 
@@ -32,6 +32,7 @@ func (state *ControllerState) GetAllTodos(c *gin.Context) {
 		c.JSON(
 			http.StatusInternalServerError,
 			errors.ServerError{Message: err.Error()})
+		return
 	}
 
 	c.IndentedJSON(http.StatusOK, todos)
@@ -47,10 +48,12 @@ func (state *ControllerState) AddTodo(c *gin.Context) {
 		return
 	}
 
-	var todoDTO, err = state.TodoService.AddTodo(createTodoDTO, actor.New("toto", actor.User, []string{"basic-user"}))
+	var currentActor = fakeAuth.ExtractActorFromGinContext(c)
+	var todoDTO, err = state.TodoService.AddTodo(createTodoDTO, currentActor)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, errors.ServerError{Message: "Cannot create todo"})
+		return
 	}
 
 	c.IndentedJSON(http.StatusCreated, todoDTO)
